@@ -9,5 +9,5 @@ Made completely out of spite of other QR Code websites having poor ux, now I alw
 3. Click on the QR code to download it.
 4. Download names are nicely formatted and include a salt to avoid duplicate file names.
 5. Public domain under a WTFPL license.
-6. 30kb file size.
+6. 13kb transfer size.
 7. Uses the ``qrcode`` npm package.
