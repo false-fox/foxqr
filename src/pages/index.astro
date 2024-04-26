@@ -23,18 +23,26 @@ import Layout from "../layouts/Layout.astro";
     //@ts-ignore
     let a: HTMLAnchorElement = document.getElementById("a");
 
+    //Listeners, so we update the QR code any time we change an option.
     let elements = document.querySelectorAll(".input");
     elements.forEach((element) => {
       element.addEventListener("input", () => generateCode(textinput.value));
     });
 
+    //Generate QR code on page load if the input has something in it. Useful when reloading the page.
+    if (textinput.value.trim().length) {
+      generateCode(textinput.value);
+    }
+
+    //Function which generates the QR code
     function generateCode(data: string) {
+      //If we call the function but there's no data, set the qr code to be a blank image instead.
       if (!data.trim().length) {
         i.src = "/blankwhitesquare.png";
         return;
       }
       QRCode.toDataURL(data, {
-		//@ts-ignore
+        //@ts-ignore
         margin: marginInput.value,
         width: resolution.value,
         errorCorrectionLevel: ErrorCorrection.value,
@@ -46,13 +54,22 @@ import Layout from "../layouts/Layout.astro";
         .then((url) => {
           i.src = url;
           a.href = url;
-		  let timestamp = `${Date.now()}`
-		  //@ts-ignore
-          a.download = "foxqr-" + data + "-" + timestamp.slice(timestamp.length - 5);
+
+          //set the download to be something prettier than "Untitled.png", and have a salt so you don't save images of the same name and get (1) or (2) and stuff.
+          let timestamp = `${Date.now()}`;
+          //@ts-ignore
+          a.download =
+            "foxqr-" +
+            sanitize(data) +
+            "-" +
+            timestamp.slice(timestamp.length - 5);
         })
         .catch((err) => {
           console.error(err);
         });
+    }
+    function sanitize(str) {
+      return str.replaceAll(".", "").replaceAll(":", "").replaceAll("/", "");
     }
   </script>
   <main>
@@ -129,8 +146,6 @@ import Layout from "../layouts/Layout.astro";
   </main>
 </Layout>
 <style lang="less">
-
-
   #options {
     display: flex;
     flex-direction: column;
