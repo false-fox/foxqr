@@ -38,7 +38,7 @@ import Layout from "../layouts/Layout.astro";
     function generateCode(data: string) {
       //If we call the function but there's no data, set the qr code to be a blank image instead.
       if (!data.trim().length) {
-        i.src = "/blankwhitesquare.png";
+        i.src = "";
         return;
       }
       QRCode.toDataURL(data, {
@@ -91,7 +91,7 @@ import Layout from "../layouts/Layout.astro";
           placeholder="Hello World!"
         /><br />
         <a id="a" download="">
-          <img id="codeContainer" src="/blankwhitesquare.png" />
+          <img id="codeContainer" />
         </a>
         <h1>Options</h1>
         <div id="options">
@@ -193,8 +193,10 @@ import Layout from "../layouts/Layout.astro";
   #codeContainer {
     margin-top: 1em;
     width: 325px;
+	height: 325px;
     border: 2px solid black;
     box-shadow: 2px 2px grey;
+	background-color: white;
   }
   #content {
     max-width: 20em;
